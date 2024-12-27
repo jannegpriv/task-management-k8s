@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: janneg
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: linode-block-storage  # Linode's storage class
+  resources:
+    requests:
+      storage: 10Gi

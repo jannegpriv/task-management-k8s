@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-manager-ui
+  namespace: janneg
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: task-manager-ui
+  template:
+    metadata:
+      labels:
+        app: task-manager-ui
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: task-manager-ui
+          image: ghcr.io/jannegpriv/task-management-ui:latest
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-manager-ui
+  namespace: janneg
+spec:
+  selector:
+    app: task-manager-ui
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: janneg
+
+resources:
+  - ../../base
+
+# Replace the base secrets with production secrets
+patchesStrategicMerge:
+  - secrets.yaml
+
+# You might also want to set specific image tags for production
+images:
+  - name: ghcr.io/jannegpriv/task-manager-api
+    newTag: latest  # Replace with specific version for production
+  - name: ghcr.io/jannegpriv/task-manager-ui
+    newTag: latest  # Replace with specific version for production
