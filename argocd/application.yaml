@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: task-management-infra
+  name: task-management
   namespace: argocd
 spec:
   project: default
@@ -18,45 +18,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: task-management-backend
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/jannegpriv/task-management.git'
-    path: .
-    targetRevision: HEAD
-    plugin:
-      name: dockerfile-build
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: janneg
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: task-management-frontend
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: 'https://github.com/jannegpriv/task-management-ui.git'
-    path: .
-    targetRevision: HEAD
-    plugin:
-      name: dockerfile-build
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: janneg
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
