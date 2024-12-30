@@ -11,10 +11,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - argocd.duckdns.org
+    - argotaskm.duckdns.org
     secretName: argocd-secret
   rules:
-  - host: argocd.duckdns.org
+  - host: argotaskm.duckdns.org
     http:
       paths:
       - path: /
