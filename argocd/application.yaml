@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: task-management
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: backend=ghcr.io/jannegpriv/task-management,frontend=ghcr.io/jannegpriv/task-management-ui
+    argocd-image-updater.argoproj.io/backend.update-strategy: latest
+    argocd-image-updater.argoproj.io/frontend.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
   source:
