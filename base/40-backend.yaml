@@ -1,53 +1,53 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: task-manager-api
+  name: task-management
   namespace: janneg
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: task-manager-api
+      app: task-management
   template:
     metadata:
       labels:
-        app: task-manager-api
+        app: task-management
     spec:
       imagePullSecrets:
         - name: ghcr-secret
       containers:
-        - name: task-manager-api
-          image: ghcr.io/jannegpriv/task-management-api:latest
+        - name: task-management
+          image: ghcr.io/jannegpriv/task-management:latest
           ports:
             - containerPort: 5555
           envFrom:
             - secretRef:
-                name: api-secrets
+                name: postgres-secrets
           readinessProbe:
             httpGet:
-              path: /tasks
+              path: /api/tasks
               port: 5555
             initialDelaySeconds: 15
             periodSeconds: 10
             timeoutSeconds: 5
-            failureThreshold: 3       # Allow more failures before restart
+            failureThreshold: 3
           livenessProbe:
             httpGet:
-              path: /tasks
+              path: /api/tasks
               port: 5555
             initialDelaySeconds: 30
             periodSeconds: 20
-            timeoutSeconds: 5         # Added timeout
-            failureThreshold: 6       # Allow more failures before restart
+            timeoutSeconds: 5
+            failureThreshold: 6
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: task-manager-api
+  name: task-management
   namespace: janneg
 spec:
   selector:
-    app: task-manager-api
+    app: task-management
   ports:
     - protocol: TCP
       port: 80

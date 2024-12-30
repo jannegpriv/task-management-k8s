@@ -1,2 +1,1 @@
-# Ignore production secrets
-secrets.yaml
+# Production specific ignores

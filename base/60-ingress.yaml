@@ -6,11 +6,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
-    nginx.ingress.kubernetes.io/secure-backends: "false"
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   ingressClassName: nginx
   tls:
@@ -21,17 +17,24 @@ spec:
   - host: taskm.duckdns.org
     http:
       paths:
-      - path: /api/(.*)
+      - path: /api/.*
         pathType: ImplementationSpecific
         backend:
           service:
-            name: task-manager-api
+            name: task-management
+            port:
+              number: 80
+      - path: /assets/
+        pathType: Prefix
+        backend:
+          service:
+            name: task-management-ui
             port:
               number: 80
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: task-manager-ui
+            name: task-management-ui
             port:
               number: 80
