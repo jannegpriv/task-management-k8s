@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-management
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/jannegpriv/task-management-k8s.git'
+    path: overlays/production
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: janneg
+  syncPolicy:
+    automated:
+      prune: true  # Automatically delete resources that no longer exist in Git
+      selfHeal: true  # Automatically sync if drift is detected
+    syncOptions:
+      - CreateNamespace=true  # Automatically create the namespace if it doesn't exist
