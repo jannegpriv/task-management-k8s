@@ -12,7 +12,8 @@ spec:
   source:
     repoURL: https://github.com/jannegpriv/task-management-k8s.git
     targetRevision: HEAD
-    path: .
+    path: overlays/production
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: default
