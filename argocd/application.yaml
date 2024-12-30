@@ -4,19 +4,18 @@ metadata:
   name: task-management
   namespace: argocd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: backend=ghcr.io/jannegpriv/task-management,frontend=ghcr.io/jannegpriv/task-management-ui
-    argocd-image-updater.argoproj.io/backend.update-strategy: latest
-    argocd-image-updater.argoproj.io/frontend.update-strategy: latest
+    argocd-image-updater.argoproj.io/image-list: ghcr.io/jannegpriv/task-management:latest,ghcr.io/jannegpriv/task-management-ui:latest
     argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/git-branch: main
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/jannegpriv/task-management-k8s.git'
-    path: overlays/production
+    repoURL: https://github.com/jannegpriv/task-management-k8s.git
     targetRevision: HEAD
+    path: .
   destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: janneg
+    server: https://kubernetes.default.svc
+    namespace: default
   syncPolicy:
     automated:
       prune: true
