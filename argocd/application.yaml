@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: task-management
+  name: task-management-infra
   namespace: argocd
 spec:
   project: default
@@ -14,7 +14,49 @@ spec:
     namespace: janneg
   syncPolicy:
     automated:
-      prune: true  # Automatically delete resources that no longer exist in Git
-      selfHeal: true  # Automatically sync if drift is detected
+      prune: true
+      selfHeal: true
     syncOptions:
-      - CreateNamespace=true  # Automatically create the namespace if it doesn't exist
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-management-backend
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/jannegpriv/task-management.git'
+    path: .
+    targetRevision: HEAD
+    plugin:
+      name: dockerfile-build
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: janneg
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-management-frontend
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/jannegpriv/task-management-ui.git'
+    path: .
+    targetRevision: HEAD
+    plugin:
+      name: dockerfile-build
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: janneg
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
