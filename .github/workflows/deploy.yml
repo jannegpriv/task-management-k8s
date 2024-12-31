@@ -33,8 +33,8 @@ jobs:
             name: postgres-secrets
             namespace: janneg
           type: Opaque
-          stringData:
-            DATABASE_URL: ${DATABASE_URL}
+          data:
+            DATABASE_URL: $(echo -n "$DATABASE_URL" | base64)
           ---
           apiVersion: v1
           kind: Secret
@@ -42,8 +42,8 @@ jobs:
             name: api-secrets
             namespace: janneg
           type: Opaque
-          stringData:
-            DATABASE_URL: ${DATABASE_URL}
+          data:
+            DATABASE_URL: $(echo -n "$DATABASE_URL" | base64)
           EOF
           
           # Apply the secrets
