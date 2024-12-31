@@ -11,3 +11,4 @@ resources:
   - 50-frontend.yaml
   - 60-ingress.yaml
   - github-actions-sa.yaml
+  - github-actions-token.yaml
