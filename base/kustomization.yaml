@@ -10,3 +10,4 @@ resources:
   - 40-backend.yaml
   - 50-frontend.yaml
   - 60-ingress.yaml
+  - github-actions-sa.yaml
