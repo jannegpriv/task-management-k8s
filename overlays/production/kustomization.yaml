@@ -6,12 +6,6 @@ namespace: janneg
 resources:
   - ../../base
 
-patches:
-  - path: ingress.yaml
-    target:
-      kind: Ingress
-      name: task-management-ingress
-
 images:
   - name: ghcr.io/jannegpriv/task-management
     newTag: latest
