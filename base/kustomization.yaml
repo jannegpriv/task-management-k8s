@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - 01-namespace.yaml
-  - sealed-secrets.yaml
+  - 10-sealed-secrets.yaml
   - 15-registry-secret.yaml
   - 20-storage.yaml
   - 30-postgres.yaml
