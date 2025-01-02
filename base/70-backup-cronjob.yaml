@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: db-backup
+spec:
+  schedule: "0 1 * * *"  # Run at 1 AM every day
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: backup
+            image: ghcr.io/jannegpriv/task-management-backup:latest
+            env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DATABASE_URL
+            - name: B2_APPLICATION_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: b2-credentials
+                  key: B2_APPLICATION_KEY_ID
+            - name: B2_APPLICATION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: b2-credentials
+                  key: B2_APPLICATION_KEY
+            - name: B2_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: b2-credentials
+                  key: B2_BUCKET_NAME
+          restartPolicy: OnFailure
