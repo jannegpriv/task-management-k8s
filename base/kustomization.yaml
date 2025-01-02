@@ -6,6 +6,7 @@ namespace: janneg
 resources:
   - 01-namespace.yaml
   - 10-sealed-secrets.yaml
+  - 11-b2-sealed-secret.yaml
   - 15-registry-secret.yaml
   - 20-storage.yaml
   - 30-postgres.yaml
