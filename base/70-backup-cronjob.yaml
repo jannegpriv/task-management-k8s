@@ -13,7 +13,7 @@ spec:
         spec:
           containers:
           - name: backup
-            image: ghcr.io/jannegpriv/task-management-k8s-backup:v1.0.1-backup
+            image: ghcr.io/jannegpriv/task-management-k8s-backup:1.0.2-backup
             env:
             - name: DATABASE_URL
               valueFrom:
