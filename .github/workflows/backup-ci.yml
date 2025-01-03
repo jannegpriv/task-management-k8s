@@ -24,9 +24,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout repository
@@ -47,8 +44,8 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=sha
+            type=semver,pattern={{version}},prefix=
+            type=sha,prefix=sha-
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
