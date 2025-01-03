@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
       - 'base/backup/**'
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*-backup' ]
   pull_request:
     branches: [ main ]
     paths:
