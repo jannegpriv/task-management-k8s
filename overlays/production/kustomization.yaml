@@ -8,6 +8,6 @@ resources:
 
 images:
   - name: ghcr.io/jannegpriv/task-management
-    newTag: v1.0.0
+    newTag: v1.0.2
   - name: ghcr.io/jannegpriv/task-management-ui
     newTag: v1.0.0
