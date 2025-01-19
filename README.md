@@ -129,6 +129,58 @@ ArgoCD is configured to:
 
 The ArgoCD application manifest is located in `argocd/application.yaml`.
 
+## Backup System
+
+The application includes an automated backup system for the PostgreSQL database using a Kubernetes CronJob.
+
+### Backup Schedule and Configuration
+
+- **Schedule**: Daily at 1 AM (UTC)
+- **Retention**: Keeps last 3 successful backups and 1 failed backup
+- **Concurrency**: Forbids overlapping backup jobs
+- **Image**: `ghcr.io/jannegpriv/task-management-k8s-backup:1.0.3-backup`
+
+### Backup Storage
+
+Backups are stored in Backblaze B2 cloud storage. The following secrets are required:
+- `b2-credentials` secret containing:
+  - `B2_APPLICATION_KEY_ID`
+  - `B2_APPLICATION_KEY`
+  - `B2_BUCKET_NAME`
+
+### Monitoring Backups
+
+To check the status of backup jobs:
+```bash
+# View recent backup jobs
+kubectl get cronjobs -n janneg
+kubectl get jobs -n janneg
+
+# View logs from the latest backup
+kubectl get pods -n janneg -l job-name=db-backup -o name | xargs kubectl logs -n janneg
+
+# View backup history
+kubectl get events -n janneg --field-selector involvedObject.name=db-backup
+```
+
+### Troubleshooting Failed Backups
+
+1. Check the logs of the failed backup job:
+   ```bash
+   kubectl get pods -n janneg -l job-name=db-backup -o name | xargs kubectl logs -n janneg
+   ```
+
+2. Verify the secrets are correctly configured:
+   ```bash
+   kubectl get secret b2-credentials -n janneg -o yaml
+   kubectl get secret postgres-secrets -n janneg -o yaml
+   ```
+
+3. Manual backup trigger:
+   ```bash
+   kubectl create job --from=cronjob/db-backup manual-backup-$(date +%s) -n janneg
+   ```
+
 ## Local Development
 
 For local development of the services, refer to:
