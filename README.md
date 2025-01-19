@@ -97,6 +97,30 @@ ArgoCD will automatically detect these changes and update the deployments.
 
 ### Continuous Deployment
 
+Below is a visualization of our continuous deployment workflow:
+
+```mermaid
+graph TD
+    A[Developer] -->|Push changes| B[Git Repository]
+    B -->|Triggers| C[GitHub Actions]
+    C -->|Build & Push| D[Container Registry]
+    C -->|Update manifests| B
+    B -->|Detected by| E[ArgoCD]
+    E -->|Pull images| D
+    E -->|Apply manifests| F[Kubernetes Cluster]
+    F -->|Status| E
+    E -->|Report status| B
+    
+    subgraph "Kubernetes Cluster"
+        F
+        G[Sealed Secrets Controller] -->|Decrypt secrets| F
+    end
+
+    style E fill:#2496ED
+    style F fill:#326CE5
+    style G fill:#FF4088
+```
+
 ArgoCD is configured to:
 - Automatically sync changes from this repository
 - Prune resources that are no longer in Git
